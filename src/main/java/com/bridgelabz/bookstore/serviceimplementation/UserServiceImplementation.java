@@ -103,7 +103,7 @@ public class UserServiceImplementation implements UserService {
                     adminRepository.save(adminDetails);
                     break;
             }
-            if (rabbitMQSender.send(new EmailObject(sendMail.getEmailId(), "Registration Link...", response,"Link for Verification")))
+            if (rabbitMQSender.send(new EmailObject(sendMail.getEmailId(), "Registration Link...", response, "Link for Verification")))
                 return true;
         }
         throw new UserException(environment.getProperty("user.invalidcredentials"), HttpStatus.FORBIDDEN);
@@ -166,7 +166,7 @@ public class UserServiceImplementation implements UserService {
             String roleType = String.valueOf(userCheck.getRoleType());
             userCheck.setUserStatus(true);
             userRepository.save(userCheck);
-            return new Response(userCheck.getFullName(), HttpStatus.OK.value(), token, roleType );
+            return new Response(userCheck.getFullName(), HttpStatus.OK.value(), token, roleType);
         }
         throw new UserException(environment.getProperty("user.invalid.credential"));
     }
@@ -355,11 +355,7 @@ public class UserServiceImplementation implements UserService {
     @Override
     public Response removeAll(String token) {
         long userId = JwtGenerator.decodeJWT(token);
-        UserModel userModel = userRepository.findByUserId(userId);
         orderIdGlobal = addToOrderPlaced(token);
-        redis.putMap(redisKey, userModel.getEmailId(), userModel.getFullName());
-        rabbitMQSender.send(new EmailObject(userModel.getEmailId(), "Online Book Order Confirmation ", "Hi, " + userModel.getFullName()
-                + ", Your Order Id is : " + orderIdGlobal, "Order Confirmation Mail"));
         cartRepository.findAllByUserId(userId).stream().filter(c -> !c.isInWishList()).forEach(v -> cartRepository.delete(v));
         return new Response(HttpStatus.OK.value(), environment.getProperty("quantity.removed.success"));
     }
@@ -368,18 +364,42 @@ public class UserServiceImplementation implements UserService {
 //    ==============  Order Placed ================== //
 
     private long addToOrderPlaced(String token) {
+        long userId = JwtGenerator.decodeJWT(token);
+        UserModel userModel = userRepository.findByUserId(userId);
         List<CartModel> allItemFromCart = getAllItemFromCart(token);
         long orderId = generateOrderId();
+        StringBuilder message =
+                new StringBuilder(
+                        "Hi, " + userModel.getFullName() + "\n\n" +
+                        "Your Order is Successfully Placed.\n " +
+                        "<b style='color:blue;'>your order Id is :</b> " + orderIdGlobal + "\n\n\n" +
+                        "Order Details");
         for (CartModel cartModel : allItemFromCart) {
             BookModel bookModel = bookRepository.findByBookId(cartModel.getBookId());
-            bookModel.setQuantity((int)cartModel.getQuantity());
+            bookModel.setQuantity((int) cartModel.getQuantity());
             bookRepository.save(bookModel);
             OrderPlaced order = new OrderPlaced();
             BeanUtils.copyProperties(cartModel, order);
             order.setOrderId(orderId);
             order.setQuantity((int) cartModel.getQuantity());
             orderRepository.save(order);
+            String bookOrder =
+            "\n-------------------------------------------------------------------\n" +
+            "Book Name : " + bookModel.getBookName()+"\n" +
+            "Book Price : " + bookModel.getPrice()+"\n" +
+            "Quantity : " + cartModel.getQuantity()+"\n" +
+            "Total Price : " + cartModel.getPrice()+"\n";
+            message.append(bookOrder);
         }
+        message.append("-------------------------------------------------------------------\n\n\n\n\n");
+        message.append("Thank You for Shopping With Us !!\n\n\n");
+        message.append(
+                "regards\n"+
+                "Online Book Store Team, Bangalore\n"+
+                "Contact Us : +91-9771971429");
+
+        redis.putMap(redisKey, userModel.getEmailId(), userModel.getFullName());
+        rabbitMQSender.send(new EmailObject(userModel.getEmailId(), "Online Book Order Confirmation ", message.toString(), "Order Confirmation Mail"));
         return orderId;
     }
 

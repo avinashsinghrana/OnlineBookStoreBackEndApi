@@ -109,7 +109,6 @@ public class AdminElasticServiceImpl implements AdminElasticService {
                 .matchQuery("sellerId",sellerId)
                 .operator(Operator.AND)));
         SearchResponse searchResponse = adminClient.search(searchRequest,RequestOptions.DEFAULT);
-        return listConverter(searchResponse.getHits());
+        return listConverter(searchResponse.getHits()).stream().filter(BookModel::isForApproval).collect(Collectors.toList());
     }
-
 }

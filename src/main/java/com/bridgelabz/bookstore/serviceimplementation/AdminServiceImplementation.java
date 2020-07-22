@@ -74,18 +74,19 @@ public class AdminServiceImplementation implements AdminService {
             book.setDisapproved(false);
             bookRepository.save(book);
             String message =
-                    "ONLINE BOOK STORE" +
-                    "=================\n\n" +
+                    "ONLINE BOOK STORE\n" +
+                    "===================\n\n" +
                     "Hello " + seller.getFullName() + ",\n\n" +
-                    "Sorry to Inform that your request for Book Approval got Rejected.\n" +
-                    "-----------------------------------------------------------------" +
-                    "-----------------------------------------------------------------\n" +
-                    "Book Details : " +
-                    "--------------" +
+                    "Congratulation to Inform that your request for Book Approval got Approved.\n" +
+                    "------------------------------------------------------------------------------------\n" +
+                    "------------------------------------------------------------------------------------\n" +
+
+                    "Book Details :\n" +
+                    "--------------\n" +
                     "Book Name : " + book.getBookName() + "\n" +
                     "Author Name: " + book.getAuthorName() + "\n" +
                     "Book Price : " + book.getPrice() + "\n" +
-                    "----------------------------------------------------------------" +
+                    "----------------------------------------------------------------\n" +
                     "\n\n" +
                     "Have a great Experience with us !!" +
                     "\n\n\n\n" +
@@ -110,23 +111,23 @@ public class AdminServiceImplementation implements AdminService {
             BookModel book = bookRepository.findByBookId(bookId);
             UserModel seller = userRepository.findByUserId(sellerId);
             String message =
-                    "ONLINE BOOK STORE" +
+                    "ONLINE BOOK STORE\n" +
                     "=================\n\n" +
                     "Hello " + seller.getFullName() + ",\n\n" +
-                    "Congratulation to Inform that your request for Book Approval got Approved.\n" +
-                    "-----------------------------------------------------------------" +
-                    "-----------------------------------------------------------------\n" +
-                    "Book Details : " +
-                    "--------------" +
+                    "Sorry to Inform that your request for Book Approval got Accepted.\n" +
+                    "------------------------------------------------------------------------------------\n" +
+                    "------------------------------------------------------------------------------------\n" +
+                    "Book Details :\n" +
+                    "--------------\n" +
                     "Book Name : " + book.getBookName() + "\n" +
                     "Author Name: " + book.getAuthorName() + "\n" +
                     "Book Price : " + book.getPrice() + "\n" +
-                    "-----------------------------------------------------------------" +
+                    "-----------------------------------------------------------------\n" +
                     "Description of Rejection : \n" +
-                    "--------------------------" +
+                    "-------------------------------\n" +
                     "Your Request for approval has been rejected because it doesn't fulfilled\n" +
                     "Terms & Conditions of company policies.\n" +
-                    "------------------------------------------------------------------------" +
+                    "-----------------------------------------------------------------------------------\n" +
                     "\n\n" +
                     "You can again apply for Approval." +
                     "\n\n\n\n" +

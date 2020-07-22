@@ -269,8 +269,7 @@ public class UserController {
 
     @PutMapping(value = "/addImg")
     public ResponseEntity<Response> addImageToProfile(@RequestParam String imageUrl, @RequestParam String token) {
-//        String imgUrl = amazonS3Client.uploadFile(multipartFile);
-//        userService.setProfilePic(imageUrl, token);
+        userService.setProfilePic(imageUrl, token);
         return ResponseEntity.status(HttpStatus.OK).body(new Response(HttpStatus.OK.value(), "Image Uploaded Successfully"));
     }
 

@@ -25,9 +25,9 @@ public class AdminController {
 	private AdminElasticService adminElasticService;
 
 	@GetMapping("/getBooksForVerification")
-	public ResponseEntity<Response> getAllUnverifiedBooks(@RequestParam long sellerId) throws IOException {
-		List<BookModel> bookModels = adminElasticService.searchBookElasticSearch(sellerId);
-		return ResponseEntity.status(HttpStatus.OK).body(new Response("all unVerified Book", HttpStatus.OK.value(),bookModels));
+	public List<BookModel> getAllUnverifiedBooks(@RequestParam long sellerId) throws IOException {
+		return adminElasticService.searchBookElasticSearch(sellerId);
+//		return ResponseEntity.status(HttpStatus.OK).body(new Response("all unVerified Book", HttpStatus.OK.value(),bookModels));
 	}
 
 	@PutMapping("/bookVerification/{sellerId}/{bookId}/{token}")

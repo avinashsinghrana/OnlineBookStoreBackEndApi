@@ -2,12 +2,14 @@ package com.bridgelabz.bookstore.exception;
 
 import java.time.LocalDateTime;
 
+import lombok.EqualsAndHashCode;
 import org.springframework.http.HttpStatus;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 @ToString
