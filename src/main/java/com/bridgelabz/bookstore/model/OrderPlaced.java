@@ -18,7 +18,7 @@ public class OrderPlaced {
     private Long id;
     private long userId;
     private long bookId;
-    private long orderId;
+    private String orderId;
     private int quantity;
     private double price;
     private ZoneId zid = ZoneId.systemDefault();

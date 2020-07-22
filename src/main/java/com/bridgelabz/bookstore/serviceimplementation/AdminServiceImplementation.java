@@ -73,27 +73,27 @@ public class AdminServiceImplementation implements AdminService {
             book.setVerfied(true);
             book.setDisapproved(false);
             bookRepository.save(book);
-            String message =
-                    "ONLINE BOOK STORE\n" +
-                    "===================\n\n" +
-                    "Hello " + seller.getFullName() + ",\n\n" +
-                    "Congratulation to Inform that your request for Book Approval got Approved.\n" +
-                    "------------------------------------------------------------------------------------\n" +
-                    "------------------------------------------------------------------------------------\n" +
-
-                    "Book Details :\n" +
-                    "--------------\n" +
-                    "Book Name : " + book.getBookName() + "\n" +
-                    "Author Name: " + book.getAuthorName() + "\n" +
-                    "Book Price : " + book.getPrice() + "\n" +
-                    "----------------------------------------------------------------\n" +
-                    "\n\n" +
-                    "Have a great Experience with us !!" +
-                    "\n\n\n\n" +
-                    "Thank you,\n" +
-                    "Online Book Store Team, Bangalore\n";
-            rabbitMQSender.send(new EmailObject(seller.getEmailId(), "Book Approved Response" +
-                    book.getBookName(), message, "Congrats for Approval"));
+//            String message =
+//                    "ONLINE BOOK STORE\n" +
+//                    "===================\n\n" +
+//                    "Hello " + seller.getFullName() + ",\n\n" +
+//                    "Congratulation to Inform that your request for Book Approval got Approved.\n" +
+//                    "------------------------------------------------------------------------------------\n" +
+//                    "------------------------------------------------------------------------------------\n" +
+//
+//                    "Book Details :\n" +
+//                    "--------------\n" +
+//                    "Book Name : " + book.getBookName() + "\n" +
+//                    "Author Name: " + book.getAuthorName() + "\n" +
+//                    "Book Price : " + book.getPrice() + "\n" +
+//                    "----------------------------------------------------------------\n" +
+//                    "\n\n" +
+//                    "Have a great Experience with us !!" +
+//                    "\n\n\n\n" +
+//                    "Thank you,\n" +
+//                    "Online Book Store Team, Bangalore\n";
+//            rabbitMQSender.send(new EmailObject(seller.getEmailId(), "Book Approved Response" +
+//                    book.getBookName(), message, "Congrats for Approval"));
             sellerElasticService.updateBookForElasticSearch(book);
             userElasticService.addBookForElasticSearch(book);
             adminElasticService.updateBookForElasticSearch(book);
@@ -113,28 +113,25 @@ public class AdminServiceImplementation implements AdminService {
             String message =
                     "ONLINE BOOK STORE\n" +
                     "=================\n\n" +
-                    "Hello " + seller.getFullName() + ",\n\n" +
-                    "Sorry to Inform that your request for Book Approval got Accepted.\n" +
-                    "------------------------------------------------------------------------------------\n" +
-                    "------------------------------------------------------------------------------------\n" +
-                    "Book Details :\n" +
-                    "--------------\n" +
+                    "Hello " + seller.getFullName() + ",\n" +
+                    "<b>Sorry to Inform that your request for Book Approval got Accepted.</b>\n\n" +
+                    "<b>Book Details :</b>\n" +
+                    "-----------------\n" +
                     "Book Name : " + book.getBookName() + "\n" +
                     "Author Name: " + book.getAuthorName() + "\n" +
-                    "Book Price : " + book.getPrice() + "\n" +
-                    "-----------------------------------------------------------------\n" +
-                    "Description of Rejection : \n" +
-                    "-------------------------------\n" +
+                    "Book Price : " + book.getPrice() + "\n\n\n" +
+                    "<b>Description of Rejection : </b>\n" +
+                    "-------------------------------------\n" +
                     "Your Request for approval has been rejected because it doesn't fulfilled\n" +
                     "Terms & Conditions of company policies.\n" +
-                    "-----------------------------------------------------------------------------------\n" +
-                    "\n\n" +
+                    "\n\n\n" +
                     "You can again apply for Approval." +
                     "\n\n\n\n" +
                     "Thank you,\n" +
-                    "Online Book Store Team, Bangalore\n";
+                    "Online Book Store Team, Bangalore\n" +
+                    "Contact us : +91-9771971429";
             rabbitMQSender.send(new EmailObject(seller.getEmailId(), "Response for " +
-                    book.getBookName(), message, "Book Approval Response"));
+                    book.getBookName(), message, "Book Disapproved Response"));
             book.setDisapproved(true);
             book.setVerfied(false);
             bookRepository.save(book);

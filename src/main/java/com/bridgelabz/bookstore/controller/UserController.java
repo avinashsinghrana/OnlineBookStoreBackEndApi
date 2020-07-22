@@ -1,7 +1,6 @@
 package com.bridgelabz.bookstore.controller;
 
 import java.io.IOException;
-import java.sql.ResultSet;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -9,7 +8,6 @@ import javax.validation.Valid;
 import com.bridgelabz.bookstore.ElasticSearch.Service.UserElasticService;
 import com.bridgelabz.bookstore.dto.*;
 import com.bridgelabz.bookstore.exception.BookException;
-import com.bridgelabz.bookstore.model.CartModel;
 import com.bridgelabz.bookstore.response.UserAddressDetailsResponse;
 import com.bridgelabz.bookstore.serviceimplementation.AmazonS3ClientServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,9 +42,6 @@ import io.swagger.annotations.ApiOperation;
 @CrossOrigin(allowedHeaders = "*", origins = "*")
 @PropertySource(name = "user", value = {"classpath:response.properties"})
 public class UserController {
-
-    @Autowired
-    private AmazonS3ClientServiceImpl amazonS3Client;
 
     @Autowired
     private UserService userService;
@@ -226,13 +221,13 @@ public class UserController {
 
     @ApiOperation(value = "Clear Cart while Checkout")
     @DeleteMapping("/removeAll")
-    public Response removeAll(@RequestParam String token) {
-        return userService.removeAll(token);
+    public Response removeAll(@RequestParam String token, @RequestParam Long id) {
+        return userService.removeAll(token, id);
     }
 
     /* OrderIDGeneratorMethod */
     @GetMapping("/orderId")
-    public long getOrderId() {
+    public String getOrderId() {
         return userService.getOrderId();
     }
 

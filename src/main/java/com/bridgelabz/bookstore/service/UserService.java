@@ -50,9 +50,9 @@ public interface UserService {
     Response deleteUserDetails(UserDetailsDTO userDetail, long userId);
 
 
-    Response removeAll(String token);
+    Response removeAll(String token, Long id);
 
-    long getOrderId();
+    String getOrderId();
 
     Response addToWishList(Long bookId, String token);
 

@@ -35,7 +35,7 @@ import static java.util.stream.Collectors.toList;
 @Service
 @PropertySource(name = "user", value = {"classpath:response.properties"})
 public class UserServiceImplementation implements UserService {
-    private static long orderIdGlobal;
+    private static String orderIdGlobal;
 
     @Autowired
     private SellerRepository sellerRepository;
@@ -339,7 +339,8 @@ public class UserServiceImplementation implements UserService {
         userRepository.save(user);
         userDetailsDAO.setUser(user);
         userDetailsRepository.save(userDetailsDAO);
-        return new Response(HttpStatus.OK.value(), environment.getProperty("user.details.added"));
+        long id = userDetailsRepository.findByAddressAndUserId(userDetail.getAddress(),userId).getSequenceNo();
+        return new Response(environment.getProperty("user.details.added"), HttpStatus.OK.value(),id);
     }
 
     @Override
@@ -353,9 +354,9 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
-    public Response removeAll(String token) {
+    public Response removeAll(String token, Long id) {
         long userId = JwtGenerator.decodeJWT(token);
-        orderIdGlobal = addToOrderPlaced(token);
+        orderIdGlobal = addToOrderPlaced(token, id);
         cartRepository.findAllByUserId(userId).stream().filter(c -> !c.isInWishList()).forEach(v -> cartRepository.delete(v));
         return new Response(HttpStatus.OK.value(), environment.getProperty("quantity.removed.success"));
     }
@@ -363,16 +364,21 @@ public class UserServiceImplementation implements UserService {
 
 //    ==============  Order Placed ================== //
 
-    private long addToOrderPlaced(String token) {
+    private String addToOrderPlaced(String token, Long id) {
         long userId = JwtGenerator.decodeJWT(token);
         UserModel userModel = userRepository.findByUserId(userId);
+        UserDetails userDetails = userDetailsRepository.findById(id).get();
         List<CartModel> allItemFromCart = getAllItemFromCart(token);
-        long orderId = generateOrderId();
+        String orderId = generateOrderId();
         StringBuilder message =
                 new StringBuilder(
                         "Hi, " + userModel.getFullName() + "\n\n" +
                         "Your Order is Successfully Placed.\n " +
-                        "<b style='color:blue;'>your order Id is :</b> " + orderIdGlobal + "\n\n\n" +
+                        "<b style='color:blue;'>your order Id is :</b> " + orderIdGlobal + "\n\n" +
+                        "Shipping Address : "+userDetails.getFullName()+"\n"+
+                                "Add: "+userDetails.getAddress().substring(0, 30)+"-\n"+
+                                userDetails.getAddress().substring(30)+"\n" +
+                                userDetails.getCity()+" -"+userDetails.getPinCode()+"\n" +"\n\n\n\n"+
                         "Order Details");
         for (CartModel cartModel : allItemFromCart) {
             BookModel bookModel = bookRepository.findByBookId(cartModel.getBookId());
@@ -404,18 +410,17 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
-    public long getOrderId() {
+    public String getOrderId() {
         return orderIdGlobal;
     }
 
-    public long generateOrderId() {
-        long orderId = (long) ((Math.random() * 11111L) + 999999L);
-        String pattern = "yyyyMMddHHmmSSmmSSyyyy";
+    public String generateOrderId() {
+        long random = (long) ((Math.random() * 1L) + 9999L);
+        String pattern = "yyyyMMddHHmmSSmmYYYY";
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
         Date time = new Date();
-        String date = simpleDateFormat.format(time) + orderId;
-        return Long.parseLong(date);
+        return "OBS"+simpleDateFormat.format(time) + random;
     }
 
     // ========================  without login add to cart and wishlist ========================== //
