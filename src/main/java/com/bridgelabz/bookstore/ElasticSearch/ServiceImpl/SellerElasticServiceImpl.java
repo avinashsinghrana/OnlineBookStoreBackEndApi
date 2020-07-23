@@ -131,7 +131,8 @@ public class SellerElasticServiceImpl implements SellerElasticService {
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchRequest.source(searchSourceBuilder.query(matchQueryBuilder));
         SearchResponse searchResponse = sellerClient.search(searchRequest, RequestOptions.DEFAULT);
-        return listConverter(searchResponse.getHits());
+        List<BookModel> data = listConverter(searchResponse.getHits());
+        return data.stream().sorted(Comparator.comparing(BookModel::getCreatedDateAndTime)).collect(Collectors.toList());
     }
 
     private List<BookModel> listConverter(SearchHits search) {

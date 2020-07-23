@@ -1,5 +1,6 @@
 package com.bridgelabz.bookstore.serviceimplementation;
 
+import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ import static java.util.stream.Collectors.toList;
 @Service
 @PropertySource(name = "user", value = {"classpath:response.properties"})
 public class UserServiceImplementation implements UserService {
-    private static String orderIdGlobal;
+    public static String orderIdGlobal;
 
     @Autowired
     private SellerRepository sellerRepository;
@@ -188,6 +189,7 @@ public class UserServiceImplementation implements UserService {
             cartModel.setQuantity(1);
             cartModel.setIpAddress("ASSIGNED WITH USER");
             cartModel.setUserId(id);
+            cartModel.setActualQuantity(bookModel.getQuantity());
             cartModel.setInWishList(false);
             cartRepository.save(cartModel);
             return new Response(environment.getProperty("book.added.to.cart.successfully"), HttpStatus.OK.value(), cartModel);
@@ -224,10 +226,12 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public Response addFromWishlistToCart(Long bookId, String token) {
+        BookModel bookModel = bookRepository.findByBookId(bookId);
         long id = JwtGenerator.decodeJWT(token);
         CartModel cartModel = cartRepository.findByUserIdAndBookId(id, bookId);
         if (cartModel.isInWishList()) {
             cartModel.setInWishList(false);
+            cartModel.setActualQuantity(bookModel.getQuantity());
             cartRepository.save(cartModel);
             return new Response(HttpStatus.OK.value(), "Added SuccessFully To addToKart from wishlist");
         }
@@ -374,30 +378,34 @@ public class UserServiceImplementation implements UserService {
                 new StringBuilder(
                         "Hi, " + userModel.getFullName() + "\n\n" +
                         "Your Order is Successfully Placed.\n " +
-                        "<b style='color:blue;'>your order Id is :</b> " + orderIdGlobal + "\n\n" +
+                        "your order Id is :" + orderId + "\n\n" +
                         "Shipping Address : "+userDetails.getFullName()+"\n"+
-                                "Add: "+userDetails.getAddress().substring(0, 30)+"-\n"+
+                                ""+userDetails.getAddress().substring(0, 30)+"-\n"+
                                 userDetails.getAddress().substring(30)+"\n" +
                                 userDetails.getCity()+" -"+userDetails.getPinCode()+"\n" +"\n\n\n\n"+
-                        "Order Details");
+                        "Order Summary");
+        long totalPrice = 0;
         for (CartModel cartModel : allItemFromCart) {
             BookModel bookModel = bookRepository.findByBookId(cartModel.getBookId());
-            bookModel.setQuantity((int) cartModel.getQuantity());
+            bookModel.setQuantity((int) (bookModel.getQuantity() - cartModel.getQuantity()));
             bookRepository.save(bookModel);
             OrderPlaced order = new OrderPlaced();
             BeanUtils.copyProperties(cartModel, order);
             order.setOrderId(orderId);
             order.setQuantity((int) cartModel.getQuantity());
             orderRepository.save(order);
+            totalPrice += cartModel.getPrice();
             String bookOrder =
             "\n-------------------------------------------------------------------\n" +
             "Book Name : " + bookModel.getBookName()+"\n" +
-            "Book Price : " + bookModel.getPrice()+"\n" +
+            "Book Price : Rs." + bookModel.getPrice()+"\n" +
             "Quantity : " + cartModel.getQuantity()+"\n" +
-            "Total Price : " + cartModel.getPrice()+"\n";
+            "Total Price : Rs." + cartModel.getPrice();
             message.append(bookOrder);
         }
-        message.append("-------------------------------------------------------------------\n\n\n\n\n");
+        message.append("\n-------------------------------------------------------------------\n" +
+                "Overall Amount Received : Rs."+ totalPrice
+                +"\n\n\n\n");
         message.append("Thank You for Shopping With Us !!\n\n\n");
         message.append(
                 "regards\n"+
@@ -415,7 +423,7 @@ public class UserServiceImplementation implements UserService {
     }
 
     public String generateOrderId() {
-        long random = (long) ((Math.random() * 1L) + 9999L);
+        long random = (long) ((Math.random() * 111L) + 999999L);
         String pattern = "yyyyMMddHHmmSSmmYYYY";
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);

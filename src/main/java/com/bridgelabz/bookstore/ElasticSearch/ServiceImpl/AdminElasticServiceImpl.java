@@ -2,6 +2,7 @@ package com.bridgelabz.bookstore.ElasticSearch.ServiceImpl;
 
 import com.bridgelabz.bookstore.ElasticSearch.Service.AdminElasticService;
 import com.bridgelabz.bookstore.model.BookModel;
+import com.bridgelabz.bookstore.model.UserModel;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.index.IndexRequest;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -102,13 +104,12 @@ public class AdminElasticServiceImpl implements AdminElasticService {
     }
 
     @Override
-    public List<BookModel> searchBookElasticSearch(long sellerId) throws IOException {
+    public List<BookModel> searchBookElasticSearch(Long sellerId) throws IOException {
         SearchRequest searchRequest = new SearchRequest("admin");
+        QueryBuilder matchQueryBuilder = QueryBuilders.matchQuery("sellerId", sellerId);
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchRequest.source(searchSourceBuilder.query(QueryBuilders
-                .matchQuery("sellerId",sellerId)
-                .operator(Operator.AND)));
-        SearchResponse searchResponse = adminClient.search(searchRequest,RequestOptions.DEFAULT);
-        return listConverter(searchResponse.getHits()).stream().filter(BookModel::isForApproval).collect(Collectors.toList());
+        searchRequest.source(searchSourceBuilder.query(matchQueryBuilder));
+        SearchResponse searchResponse = adminClient.search(searchRequest, RequestOptions.DEFAULT);
+        return listConverter(searchResponse.getHits()).stream().filter(BookModel::isForApproval).sorted(Comparator.comparing(BookModel::getCreatedDateAndTime)).collect(Collectors.toList());
     }
 }

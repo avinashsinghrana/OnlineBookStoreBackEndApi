@@ -11,7 +11,7 @@ import com.bridgelabz.bookstore.response.Response;
 
 public interface AdminService {
 
-	List<BookModel> getAllUnVerifiedBooks(String token) throws UserNotFoundException, IOException;
+//	List<BookModel> getAllUnVerifiedBooks() throws UserNotFoundException, IOException;
 
     Response bookVerification(Long bookId, Long sellerId, String token) throws UserNotFoundException, IOException;
 

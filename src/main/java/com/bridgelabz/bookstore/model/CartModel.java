@@ -24,6 +24,7 @@ public class CartModel {
 	private String bookImgUrl;
 	private Long bookId;
 	private long quantity;
+	private long actualQuantity;
 	private double Price;
     private boolean isInWishList;
 	private long userId;

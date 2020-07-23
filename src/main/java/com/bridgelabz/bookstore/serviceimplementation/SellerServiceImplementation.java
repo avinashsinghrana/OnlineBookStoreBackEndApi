@@ -91,10 +91,7 @@ public class SellerServiceImplementation implements SellerService {
                 BeanUtils.copyProperties(newBook, book);
                 ZoneId zid = ZoneId.systemDefault();
                 book.setUpdatedDateAndTime(ZonedDateTime.now(zid));
-                book.setVerfied(true);
-                book.setDisapproved(false);
                 bookRepository.save(book);
-                System.out.println("inside quantity change only");
                 sellerElasticService.updateBookForElasticSearch(book);
                 adminElasticService.updateBookForElasticSearch(book);
                 userElasticService.updateBookForElasticSearch(book);

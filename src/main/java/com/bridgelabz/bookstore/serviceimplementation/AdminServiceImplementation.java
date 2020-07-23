@@ -52,16 +52,16 @@ public class AdminServiceImplementation implements AdminService {
     @Autowired
     private RabbitMQSender rabbitMQSender;
 
-    @Override
-    public List<BookModel> getAllUnVerifiedBooks(String token) throws UserNotFoundException, IOException {
-        long id = JwtGenerator.decodeJWT(token);
-        String role = String.valueOf(userRepository.findByUserId(id).getRoleType());
-        if (role.equals("ADMIN")) {
-            return adminElasticService.getUnverifiedBooks();
-        } else {
-            throw new UserNotFoundException("Not Authorized");
-        }
-    }
+//    @Override
+//    public List<BookModel> getAllUnVerifiedBooks(String token) throws UserNotFoundException, IOException {
+//        long id = JwtGenerator.decodeJWT(token);
+//        String role = String.valueOf(userRepository.findByUserId(id).getRoleType());
+//        if (role.equals("ADMIN")) {
+//            return adminElasticService.getUnverifiedBooks();
+//        } else {
+//            throw new UserNotFoundException("Not Authorized");
+//        }
+//    }
 
     @Override
     public Response bookVerification(Long bookId, Long sellerId, String token) throws UserNotFoundException, IOException {
@@ -69,7 +69,7 @@ public class AdminServiceImplementation implements AdminService {
         String role = String.valueOf(userRepository.findByUserId(id).getRoleType());
         if (role.equals("ADMIN")) {
             BookModel book = bookRepository.findByBookId(bookId);
-            UserModel seller = userRepository.findByUserId(sellerId);
+//            UserModel seller = userRepository.findByUserId(sellerId);
             book.setVerfied(true);
             book.setDisapproved(false);
             bookRepository.save(book);
@@ -114,13 +114,13 @@ public class AdminServiceImplementation implements AdminService {
                     "ONLINE BOOK STORE\n" +
                     "=================\n\n" +
                     "Hello " + seller.getFullName() + ",\n" +
-                    "<b>Sorry to Inform that your request for Book Approval got Accepted.</b>\n\n" +
-                    "<b>Book Details :</b>\n" +
+                    "Sorry to Inform that your request for Book Approval got Rejected.\n\n" +
+                    "Book Details :\n" +
                     "-----------------\n" +
                     "Book Name : " + book.getBookName() + "\n" +
                     "Author Name: " + book.getAuthorName() + "\n" +
                     "Book Price : " + book.getPrice() + "\n\n\n" +
-                    "<b>Description of Rejection : </b>\n" +
+                    "Description of Rejection : \n" +
                     "-------------------------------------\n" +
                     "Your Request for approval has been rejected because it doesn't fulfilled\n" +
                     "Terms & Conditions of company policies.\n" +
@@ -137,7 +137,7 @@ public class AdminServiceImplementation implements AdminService {
             bookRepository.save(book);
             sellerElasticService.updateBookForElasticSearch(book);
             adminElasticService.updateBookForElasticSearch(book);
-            return new Response(environment.getProperty("book.verified.successfull"), HttpStatus.OK.value(), book);
+            return new Response(environment.getProperty("Book DisApproved"), HttpStatus.OK.value(), book);
         } else {
             throw new UserNotFoundException("Not Authorized");
         }

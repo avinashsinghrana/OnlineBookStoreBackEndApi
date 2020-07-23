@@ -67,8 +67,6 @@ public class UserModel {
 	@Column
 	private String profileUrl;
 
-	private Long seller_id;
-
 	@ManyToMany(cascade = CascadeType.ALL,fetch=FetchType.LAZY)
 	@JoinTable(name = "userbooks", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns ={@JoinColumn(name = "book_id") })
 	private List<BookModel> book;

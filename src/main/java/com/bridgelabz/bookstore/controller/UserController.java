@@ -227,8 +227,8 @@ public class UserController {
 
     /* OrderIDGeneratorMethod */
     @GetMapping("/orderId")
-    public String getOrderId() {
-        return userService.getOrderId();
+    public Response getOrderId() {
+        return new Response(HttpStatus.OK.value(),"Order ID",userService.getOrderId());
     }
 
     @PostMapping("/addToWishlist")
@@ -263,8 +263,9 @@ public class UserController {
     }
 
     @PutMapping(value = "/addImg")
-    public ResponseEntity<Response> addImageToProfile(@RequestParam String imageUrl, @RequestParam String token) {
-        userService.setProfilePic(imageUrl, token);
+    public ResponseEntity<Response> addImageToProfile(@RequestParam("file") MultipartFile file, @RequestParam String token) {
+        String url = amazonS3ClientService.uploadFile(file);
+        userService.setProfilePic(url,token);
         return ResponseEntity.status(HttpStatus.OK).body(new Response(HttpStatus.OK.value(), "Image Uploaded Successfully"));
     }
 

@@ -15,6 +15,6 @@ public interface AdminElasticService {
 
     void updateBookForElasticSearch(BookModel book) throws IOException;
 
-    List<BookModel> searchBookElasticSearch(long sellerId) throws IOException;
+    List<BookModel> searchBookElasticSearch(Long sellerId) throws IOException;
 
 }
