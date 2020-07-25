@@ -11,29 +11,33 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b04138d1-a0a2-4267-8c35-1d0441ec16b2" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/download (1).jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/download (6).jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/web/Unverified.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/web/bookstore.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/web/ok.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/web/verifyResponse.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/web/verifyResponse.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bridgelabz/bookstore/ElasticSearch/Service/AdminElasticService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/bridgelabz/bookstore/ElasticSearch/Service/AdminElasticService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bridgelabz/bookstore/ElasticSearch/ServiceImpl/AdminElasticServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/bridgelabz/bookstore/ElasticSearch/ServiceImpl/AdminElasticServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bridgelabz/bookstore/ElasticSearch/ServiceImpl/SellerElasticServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/bridgelabz/bookstore/ElasticSearch/ServiceImpl/SellerElasticServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bridgelabz/bookstore/controller/AdminController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/bridgelabz/bookstore/controller/AdminController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/bridgelabz/bookstore/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/bridgelabz/bookstore/controller/UserController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/bridgelabz/bookstore/model/CartModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/bridgelabz/bookstore/model/CartModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bridgelabz/bookstore/model/UserModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/bridgelabz/bookstore/model/UserModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bridgelabz/bookstore/service/AdminService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/bridgelabz/bookstore/service/AdminService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/bridgelabz/bookstore/model/UserDetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/bridgelabz/bookstore/model/UserDetails.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/bridgelabz/bookstore/repository/CartRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/bridgelabz/bookstore/repository/CartRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/bridgelabz/bookstore/response/Response.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/bridgelabz/bookstore/response/Response.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/bridgelabz/bookstore/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/bridgelabz/bookstore/service/UserService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/bridgelabz/bookstore/serviceimplementation/AdminServiceImplementation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/bridgelabz/bookstore/serviceimplementation/AdminServiceImplementation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/bridgelabz/bookstore/serviceimplementation/SellerServiceImplementation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/bridgelabz/bookstore/serviceimplementation/SellerServiceImplementation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/bridgelabz/bookstore/serviceimplementation/UserServiceImplementation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/bridgelabz/bookstore/serviceimplementation/UserServiceImplementation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/bridgelabz/bookstore/utility/JwtGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/bridgelabz/bookstore/utility/JwtGenerator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/bridgelabz/bookstore/ElasticSearch/Service/AdminElasticService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/bridgelabz/bookstore/ElasticSearch/Service/AdminElasticService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/bridgelabz/bookstore/ElasticSearch/ServiceImpl/AdminElasticServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/bridgelabz/bookstore/ElasticSearch/ServiceImpl/AdminElasticServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/bridgelabz/bookstore/ElasticSearch/ServiceImpl/SellerElasticServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/bridgelabz/bookstore/ElasticSearch/ServiceImpl/SellerElasticServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/bridgelabz/bookstore/controller/AdminController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/bridgelabz/bookstore/controller/AdminController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/bridgelabz/bookstore/controller/UserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/bridgelabz/bookstore/controller/UserController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/bridgelabz/bookstore/model/CartModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/bridgelabz/bookstore/model/CartModel.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/bridgelabz/bookstore/model/UserModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/bridgelabz/bookstore/model/UserModel.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/bridgelabz/bookstore/service/AdminService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/bridgelabz/bookstore/service/AdminService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/bridgelabz/bookstore/model/UserDetails.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/bridgelabz/bookstore/model/UserDetails.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/bridgelabz/bookstore/repository/CartRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/bridgelabz/bookstore/repository/CartRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/bridgelabz/bookstore/response/Response.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/bridgelabz/bookstore/response/Response.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/bridgelabz/bookstore/service/UserService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/bridgelabz/bookstore/service/UserService.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/bridgelabz/bookstore/serviceimplementation/AdminServiceImplementation.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/bridgelabz/bookstore/serviceimplementation/AdminServiceImplementation.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/bridgelabz/bookstore/serviceimplementation/SellerServiceImplementation.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/bridgelabz/bookstore/serviceimplementation/SellerServiceImplementation.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/bridgelabz/bookstore/serviceimplementation/UserServiceImplementation$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/bridgelabz/bookstore/serviceimplementation/UserServiceImplementation$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/bridgelabz/bookstore/serviceimplementation/UserServiceImplementation.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/bridgelabz/bookstore/serviceimplementation/UserServiceImplementation.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/bridgelabz/bookstore/utility/JwtGenerator.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/bridgelabz/bookstore/utility/JwtGenerator.class" afterDir="false" />
@@ -48,6 +52,8 @@
       <list>
         <option value="Interface" />
         <option value="Class" />
+        <option value="CSS File" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -79,6 +85,7 @@
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="ChangesTree.GroupingKeys" value="module" />
     <property name="DatabaseDriversLRU" value="mysql" />
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="ExpandSpringBootJavaOptionsPanel" value="true" />
     <property name="RequestMappingsPanelOrder0" value="0" />
     <property name="RequestMappingsPanelOrder1" value="1" />
@@ -91,11 +98,17 @@
     <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="extract.method.default.visibility" value="private" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/resources/web" />
+    <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
     <property name="settings.editor.selected.configurable" value="vcs.Git" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\avina\Desktop\bridge-intellij\ideation-project\BookStore-Backend-Application\src\main\resources\web" />
+    </key>
   </component>
   <component name="RunManager">
     <configuration name="BookStoreBackendApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
@@ -159,7 +172,13 @@
       <workItem from="1595221314057" duration="30931000" />
       <workItem from="1595343577080" duration="13152000" />
       <workItem from="1595392529740" duration="19756000" />
-      <workItem from="1595436320803" duration="32688000" />
+      <workItem from="1595436320803" duration="34436000" />
+      <workItem from="1595565846214" duration="1395000" />
+      <workItem from="1595577584800" duration="7550000" />
+      <workItem from="1595601051528" duration="1259000" />
+      <workItem from="1595657310698" duration="2580000" />
+      <workItem from="1595670649401" duration="4869000" />
+      <workItem from="1595701620359" duration="10166000" />
     </task>
     <servers />
   </component>
@@ -202,14 +221,18 @@
       <screen x="0" y="0" width="1366" height="738" />
     </state>
     <state x="84" y="211" key="#SQL_Dialects/0.0.1366.738@0.0.1366.738" timestamp="1593711834890" />
-    <state x="137" y="24" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1594469386494">
+    <state x="137" y="24" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1595566172787">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
-    <state x="137" y="24" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.738@0.0.1366.738" timestamp="1594469386494" />
-    <state x="488" y="72" key="#com.intellij.ide.util.MemberChooser" timestamp="1595312707064">
+    <state x="137" y="24" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.738@0.0.1366.738" timestamp="1595566172787" />
+    <state x="445" y="158" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1595702344660">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
-    <state x="488" y="72" key="#com.intellij.ide.util.MemberChooser/0.0.1366.738@0.0.1366.738" timestamp="1595312707064" />
+    <state x="445" y="158" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1366.738@0.0.1366.738" timestamp="1595702344660" />
+    <state x="488" y="72" key="#com.intellij.ide.util.MemberChooser" timestamp="1595586602806">
+      <screen x="0" y="0" width="1366" height="738" />
+    </state>
+    <state x="488" y="72" key="#com.intellij.ide.util.MemberChooser/0.0.1366.738@0.0.1366.738" timestamp="1595586602806" />
     <state x="441" y="223" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes" timestamp="1595487405362">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
@@ -222,42 +245,42 @@
       <screen x="0" y="0" width="1366" height="738" />
     </state>
     <state x="413" y="115" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1366.738@0.0.1366.738" timestamp="1594412628845" />
-    <state x="546" y="93" key="EnvironmentVariablesDialog" timestamp="1594469383493">
+    <state x="546" y="93" key="EnvironmentVariablesDialog" timestamp="1595566155100">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
-    <state x="546" y="93" key="EnvironmentVariablesDialog/0.0.1366.738@0.0.1366.738" timestamp="1594469383493" />
-    <state width="1323" height="194" key="GridCell.Tab.0.bottom" timestamp="1595500173114">
+    <state x="546" y="93" key="EnvironmentVariablesDialog/0.0.1366.738@0.0.1366.738" timestamp="1595566155100" />
+    <state width="1323" height="194" key="GridCell.Tab.0.bottom" timestamp="1595717697584">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
-    <state width="1323" height="194" key="GridCell.Tab.0.bottom/0.0.1366.738@0.0.1366.738" timestamp="1595500173114" />
-    <state width="1323" height="194" key="GridCell.Tab.0.center" timestamp="1595500173114">
+    <state width="1323" height="194" key="GridCell.Tab.0.bottom/0.0.1366.738@0.0.1366.738" timestamp="1595717697584" />
+    <state width="1323" height="194" key="GridCell.Tab.0.center" timestamp="1595717697584">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
-    <state width="1323" height="194" key="GridCell.Tab.0.center/0.0.1366.738@0.0.1366.738" timestamp="1595500173114" />
-    <state width="1323" height="194" key="GridCell.Tab.0.left" timestamp="1595500173114">
+    <state width="1323" height="194" key="GridCell.Tab.0.center/0.0.1366.738@0.0.1366.738" timestamp="1595717697584" />
+    <state width="1323" height="194" key="GridCell.Tab.0.left" timestamp="1595717697584">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
-    <state width="1323" height="194" key="GridCell.Tab.0.left/0.0.1366.738@0.0.1366.738" timestamp="1595500173114" />
-    <state width="1323" height="194" key="GridCell.Tab.0.right" timestamp="1595500173114">
+    <state width="1323" height="194" key="GridCell.Tab.0.left/0.0.1366.738@0.0.1366.738" timestamp="1595717697584" />
+    <state width="1323" height="194" key="GridCell.Tab.0.right" timestamp="1595717697584">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
-    <state width="1323" height="194" key="GridCell.Tab.0.right/0.0.1366.738@0.0.1366.738" timestamp="1595500173114" />
-    <state width="1323" height="194" key="GridCell.Tab.1.bottom" timestamp="1595500173114">
+    <state width="1323" height="194" key="GridCell.Tab.0.right/0.0.1366.738@0.0.1366.738" timestamp="1595717697584" />
+    <state width="1323" height="194" key="GridCell.Tab.1.bottom" timestamp="1595717697585">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
-    <state width="1323" height="194" key="GridCell.Tab.1.bottom/0.0.1366.738@0.0.1366.738" timestamp="1595500173114" />
-    <state width="1323" height="194" key="GridCell.Tab.1.center" timestamp="1595500173114">
+    <state width="1323" height="194" key="GridCell.Tab.1.bottom/0.0.1366.738@0.0.1366.738" timestamp="1595717697585" />
+    <state width="1323" height="194" key="GridCell.Tab.1.center" timestamp="1595717697584">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
-    <state width="1323" height="194" key="GridCell.Tab.1.center/0.0.1366.738@0.0.1366.738" timestamp="1595500173114" />
-    <state width="1323" height="194" key="GridCell.Tab.1.left" timestamp="1595500173114">
+    <state width="1323" height="194" key="GridCell.Tab.1.center/0.0.1366.738@0.0.1366.738" timestamp="1595717697584" />
+    <state width="1323" height="194" key="GridCell.Tab.1.left" timestamp="1595717697584">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
-    <state width="1323" height="194" key="GridCell.Tab.1.left/0.0.1366.738@0.0.1366.738" timestamp="1595500173114" />
-    <state width="1323" height="194" key="GridCell.Tab.1.right" timestamp="1595500173114">
+    <state width="1323" height="194" key="GridCell.Tab.1.left/0.0.1366.738@0.0.1366.738" timestamp="1595717697584" />
+    <state width="1323" height="194" key="GridCell.Tab.1.right" timestamp="1595717697585">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
-    <state width="1323" height="194" key="GridCell.Tab.1.right/0.0.1366.738@0.0.1366.738" timestamp="1595500173114" />
+    <state width="1323" height="194" key="GridCell.Tab.1.right/0.0.1366.738@0.0.1366.738" timestamp="1595717697585" />
     <state width="199" height="539" key="HiddenNamespacesPopup" timestamp="1594421556206">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
@@ -286,14 +309,18 @@
       <screen x="0" y="0" width="1366" height="738" />
     </state>
     <state x="488" y="279" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1366.738@0.0.1366.738" timestamp="1594022032673" />
-    <state x="413" y="104" key="extract.method.dialog" timestamp="1594501135842">
+    <state x="413" y="104" key="extract.method.dialog" timestamp="1595588643489">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
-    <state x="413" y="104" key="extract.method.dialog/0.0.1366.738@0.0.1366.738" timestamp="1594501135842" />
+    <state x="413" y="104" key="extract.method.dialog/0.0.1366.738@0.0.1366.738" timestamp="1595588643489" />
     <state x="0" y="0" width="855" height="738" key="find.popup" timestamp="1594491864307">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
     <state x="0" y="0" width="855" height="738" key="find.popup/0.0.1366.738@0.0.1366.738" timestamp="1594491864307" />
+    <state width="600" height="440" key="javadoc.popup" timestamp="1595707479491">
+      <screen x="0" y="0" width="1366" height="738" />
+    </state>
+    <state width="600" height="440" key="javadoc.popup/0.0.1366.738@0.0.1366.738" timestamp="1595707479491" />
     <state x="118" y="46" key="new project wizard" timestamp="1594064913802">
       <screen x="0" y="0" width="1366" height="738" />
     </state>

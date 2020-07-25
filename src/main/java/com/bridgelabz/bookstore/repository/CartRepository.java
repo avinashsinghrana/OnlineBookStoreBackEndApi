@@ -33,5 +33,9 @@ public interface CartRepository extends JpaRepository<CartModel, Long> {
 
     List<CartModel> findByIpAddress(String ipAddress);
 
+    List<CartModel> findAllByIpAddress(String ipAddress);
+
 	CartModel findByIpAddressAndBookId(String ipAddress, Long bookId);
+
+	void deleteByIpAddressAndBookId(String token, Long bookId);
 }

@@ -41,10 +41,11 @@ public class JwtGenerator {
     }
 
     public static Long decodeJWT(String jwt) {
-        if(Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(secretKey))
-                .parseClaimsJws(jwt).getBody().getId() != null )
-                return Long.parseLong(Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(secretKey))
-                        .parseClaimsJws(jwt).getBody().getId());
-        return -1L;
+        try {
+            return Long.parseLong(Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(secretKey))
+                    .parseClaimsJws(jwt).getBody().getId());
+        }catch(Exception e) {
+            return -1L;
+        }
     }
 }

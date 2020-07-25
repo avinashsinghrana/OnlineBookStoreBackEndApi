@@ -119,14 +119,14 @@ public class AdminServiceImplementation implements AdminService {
                     "-----------------\n" +
                     "Book Name : " + book.getBookName() + "\n" +
                     "Author Name: " + book.getAuthorName() + "\n" +
-                    "Book Price : " + book.getPrice() + "\n\n\n" +
+                    "Book Price : " + book.getPrice() + "\n\n" +
                     "Description of Rejection : \n" +
                     "-------------------------------------\n" +
                     "Your Request for approval has been rejected because it doesn't fulfilled\n" +
                     "Terms & Conditions of company policies.\n" +
-                    "\n\n\n" +
+                    "\n\n" +
                     "You can again apply for Approval." +
-                    "\n\n\n\n" +
+                    "\n\n\n" +
                     "Thank you,\n" +
                     "Online Book Store Team, Bangalore\n" +
                     "Contact us : +91-9771971429";

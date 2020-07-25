@@ -66,24 +66,8 @@ public interface UserService {
 
     List<Long> getCartListStatus(String token);
 
-    String setProfilePic(String imageUrl, String token);
+    void setProfilePic(String imageUrl, String token);
 
-    Response addToCartWithoutLogin(Long bookId, String ipAddress);
-
-    Response addFromWishlistToCartWithoutLogin(Long bookId, String ipAddress);
-
-    Response deleteFromWishlistWithoutLogin(Long bookId, String ipAddress);
-
-    Response addToWishListWithoutLogin(Long bookId, String ipAddress);
-
-    Response addMoreItemsWithoutLogin(Long bookId, String ipAddress);
-
-    Response removeItemWithoutLogin(Long bookId, String ipAddress);
-
-    Response removeAllItemWithoutLogin(Long bookId, String ipAddress);
-
-    List<BookModel> getAllItemFromWishListWithoutLogin(String ipAddress);
-
-    List<BookModel> getAllItemFromCartListWithoutLogin(String ipAddress);
+    Response assignToCartAndWishList(String ipAddress,String token);
 
 }

@@ -6,6 +6,7 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.bridgelabz.bookstore.dto.*;
@@ -174,140 +175,269 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public Response addToCart(Long bookId, String token) {
-        long id = JwtGenerator.decodeJWT(token);
-        CartModel cartData = cartRepository.findByUserIdAndBookId(id, bookId);
-        if (cartData != null && !cartData.isInWishList()) {
-            return new Response(HttpStatus.OK.value(), "Book already added to cart");
-        } else if (cartData != null && cartData.isInWishList()) {
-            cartData.setInWishList(false);
-            cartRepository.save(cartData);
-            return new Response(HttpStatus.OK.value(), "Book added to cart successfully,Removed From wishlist");
+        if (JwtGenerator.decodeJWT(token) != -1L) {
+            long id = JwtGenerator.decodeJWT(token);
+            CartModel cartData = cartRepository.findByUserIdAndBookId(id, bookId);
+            if (cartData != null && !cartData.isInWishList()) {
+                return new Response(HttpStatus.OK.value(), "Book already added to cart");
+            } else if (cartData != null && cartData.isInWishList()) {
+                cartData.setInWishList(false);
+                cartRepository.save(cartData);
+                return new Response(HttpStatus.OK.value(), "Book added to cart successfully,Removed From wishlist");
+            } else {
+                BookModel bookModel = bookRepository.findByBookId(bookId);
+                CartModel cartModel = new CartModel();
+                BeanUtils.copyProperties(bookModel, cartModel);
+                cartModel.setQuantity(1);
+                cartModel.setIpAddress("NotLocalUser");
+                cartModel.setUserId(id);
+                cartModel.setActualQuantity(bookModel.getQuantity());
+                cartModel.setInWishList(false);
+                cartRepository.save(cartModel);
+                return new Response(HttpStatus.OK.value(), environment.getProperty("book.added.to.cart.successfully"), getCartListStatus(token).size());
+            }
         } else {
-            BookModel bookModel = bookRepository.findByBookId(bookId);
-            CartModel cartModel = new CartModel();
-            BeanUtils.copyProperties(bookModel, cartModel);
-            cartModel.setQuantity(1);
-            cartModel.setIpAddress("ASSIGNED WITH USER");
-            cartModel.setUserId(id);
-            cartModel.setActualQuantity(bookModel.getQuantity());
-            cartModel.setInWishList(false);
-            cartRepository.save(cartModel);
-            return new Response(environment.getProperty("book.added.to.cart.successfully"), HttpStatus.OK.value(), cartModel);
+            CartModel cartData = cartRepository.findByIpAddressAndBookId(token, bookId);
+            if (cartData != null && !cartData.isInWishList()) {
+                return new Response(HttpStatus.OK.value(), "Book already added to cart");
+            } else if (cartData != null && cartData.isInWishList()) {
+                cartData.setInWishList(false);
+                cartRepository.save(cartData);
+                return new Response(HttpStatus.OK.value(), "Book added to cart successfully,Removed From wishlist");
+            } else {
+                BookModel bookModel = bookRepository.findByBookId(bookId);
+                CartModel cartModel = new CartModel();
+                BeanUtils.copyProperties(bookModel, cartModel);
+                cartModel.setQuantity(1);
+                cartModel.setIpAddress(token);
+                cartModel.setUserId(-1);
+                cartModel.setActualQuantity(bookModel.getQuantity());
+                cartModel.setInWishList(false);
+                cartRepository.save(cartModel);
+                return new Response(HttpStatus.OK.value(), environment.getProperty("book.added.to.cart.successfully"), getCartListStatus(token).size());
+            }
         }
     }
 
     @Override
     public Response addToWishList(Long bookId, String token) {
-        long id = JwtGenerator.decodeJWT(token);
-        CartModel cartData = cartRepository.findByUserIdAndBookId(id, bookId);
-        if (cartData != null && cartData.isInWishList()) {
-            return new Response(HttpStatus.OK.value(), "Book already present in wishlist");
-        } else if (cartData != null && !cartData.isInWishList()) {
-            return new Response(HttpStatus.OK.value(), "Book already added to Cart");
+        if (JwtGenerator.decodeJWT(token) != -1L) {
+            long id = JwtGenerator.decodeJWT(token);
+            CartModel cartData = cartRepository.findByUserIdAndBookId(id, bookId);
+            if (cartData != null && cartData.isInWishList()) {
+                return new Response(HttpStatus.OK.value(), "Book already present in wishlist");
+            } else if (cartData != null && !cartData.isInWishList()) {
+                return new Response(HttpStatus.OK.value(), "Book already added to Cart");
+            } else {
+                BookModel bookModel = bookRepository.findByBookId(bookId);
+                CartModel cartModel = new CartModel();
+                BeanUtils.copyProperties(bookModel, cartModel);
+                cartModel.setIpAddress("NotLocalUser");
+                cartModel.setQuantity(1);
+                cartModel.setUserId(JwtGenerator.decodeJWT(token));
+                cartModel.setInWishList(true);
+                cartRepository.save(cartModel);
+                return new Response(HttpStatus.OK.value(), "Book added to WishList", getAllItemFromWishList(token).size());
+            }
         } else {
-            BookModel bookModel = bookRepository.findByBookId(bookId);
-            CartModel cartModel = new CartModel();
-            BeanUtils.copyProperties(bookModel, cartModel);
-            cartModel.setIpAddress("ASSIGNED WITH USER");
-            cartModel.setQuantity(1);
-            cartModel.setUserId(JwtGenerator.decodeJWT(token));
-            cartModel.setInWishList(true);
-            cartRepository.save(cartModel);
-            return new Response(HttpStatus.OK.value(), "Book added to WishList");
+            CartModel cartData = cartRepository.findByIpAddressAndBookId(token, bookId);
+            if (cartData != null && cartData.isInWishList()) {
+                return new Response(HttpStatus.OK.value(), "Book already present in wishlist");
+            } else if (cartData != null && !cartData.isInWishList()) {
+                return new Response(HttpStatus.OK.value(), "Book already added to Cart");
+            } else {
+                BookModel bookModel = bookRepository.findByBookId(bookId);
+                CartModel cartModel = new CartModel();
+                BeanUtils.copyProperties(bookModel, cartModel);
+                cartModel.setIpAddress(token);
+                cartModel.setQuantity(1);
+                cartModel.setUserId(-1);
+                cartModel.setInWishList(true);
+                cartRepository.save(cartModel);
+                return new Response(HttpStatus.OK.value(), "Book added to WishList", getAllItemFromWishList(token).size());
+            }
         }
     }
 
     @Override
     public Response deleteFromWishlist(Long bookId, String token) {
-        long id = JwtGenerator.decodeJWT(token);
-        cartRepository.deleteByUserIdAndBookId(id, bookId);
+        if (JwtGenerator.decodeJWT(token) != -1L) {
+            long id = JwtGenerator.decodeJWT(token);
+            cartRepository.deleteByUserIdAndBookId(id, bookId);
+        } else {
+            cartRepository.deleteByIpAddressAndBookId(token, bookId);
+        }
         return new Response(HttpStatus.OK.value(), "Removed SuccessFully from WishKart");
     }
 
     @Override
     public Response addFromWishlistToCart(Long bookId, String token) {
         BookModel bookModel = bookRepository.findByBookId(bookId);
-        long id = JwtGenerator.decodeJWT(token);
-        CartModel cartModel = cartRepository.findByUserIdAndBookId(id, bookId);
+        if (JwtGenerator.decodeJWT(token) != -1) {
+            long id = JwtGenerator.decodeJWT(token);
+            CartModel cartModel = cartRepository.findByUserIdAndBookId(id, bookId);
+            String message = wishToCart(cartModel, bookModel);
+            return new Response(HttpStatus.OK.value(), message, getCartListStatus(token).size());
+        } else {
+            CartModel cartModel = cartRepository.findByIpAddressAndBookId(token, bookId);
+            String message = wishToCart(cartModel, bookModel);
+            return new Response(HttpStatus.OK.value(), message, getCartListStatus(token).size());
+        }
+    }
+
+    private String wishToCart(CartModel cartModel, BookModel bookModel) {
         if (cartModel.isInWishList()) {
             cartModel.setInWishList(false);
             cartModel.setActualQuantity(bookModel.getQuantity());
             cartRepository.save(cartModel);
-            return new Response(HttpStatus.OK.value(), "Added SuccessFully To addToKart from wishlist");
+            return "Added SuccessFully To addToKart from wishlist";
         }
-        return new Response(HttpStatus.OK.value(), "Already present in cart, ready to checkout");
+        return "Already present in cart, ready to checkout";
     }
 
     @Override
     public Response addMoreItems(Long bookId, String token) {
-        long id = JwtGenerator.decodeJWT(token);
-        CartModel cartModel = cartRepository.findByUserIdAndBookId(id, bookId);
+        if (JwtGenerator.decodeJWT(token) != -1L) {
+            long id = JwtGenerator.decodeJWT(token);
+            CartModel cartModel = cartRepository.findByUserIdAndBookId(id, bookId);
+            increaseQuantity(cartModel, bookId);
+            return new Response(environment.getProperty("book.added.to.cart.successfully"), HttpStatus.OK.value(), cartModel);
+        } else {
+            CartModel cartModel = cartRepository.findByIpAddressAndBookId(token, bookId);
+            increaseQuantity(cartModel, bookId);
+            return new Response(environment.getProperty("book.added.to.cart.successfully"), HttpStatus.OK.value(), cartModel);
+        }
+    }
+
+    private void increaseQuantity(CartModel cartModel, Long bookId) {
         BookModel bookModel = bookRepository.findByBookId(bookId);
         if (cartModel.getQuantity() > 0) {
             cartModel.setQuantity(cartModel.getQuantity() + 1);
             cartModel.setPrice(bookModel.getPrice() * cartModel.getQuantity());
             cartRepository.save(cartModel);
         }
-        return new Response(environment.getProperty("book.added.to.cart.successfully"), HttpStatus.OK.value(), cartModel);
     }
 
     @Override
     public Response removeItem(Long bookId, String token) {
-        long id = JwtGenerator.decodeJWT(token);
-        CartModel cartModel = cartRepository.findByUserIdAndBookId(id, bookId);
+        if (JwtGenerator.decodeJWT(token) == -1) {
+            long id = JwtGenerator.decodeJWT(token);
+            CartModel cartModel = cartRepository.findByUserIdAndBookId(id, bookId);
+            String message = removeQuantity(cartModel, bookId);
+            return new Response(HttpStatus.OK.value(), message, getCartListStatus(token).size());
+        } else {
+            CartModel cartModel = cartRepository.findByIpAddressAndBookId(token, bookId);
+            String message = removeQuantity(cartModel, bookId);
+            return new Response(HttpStatus.OK.value(), message, getCartListStatus(token).size());
+        }
+    }
+
+    private String removeQuantity(CartModel cartModel, Long bookId) {
         BookModel bookModel = bookRepository.findByBookId(bookId);
         if (cartModel.getQuantity() > 0) {
             cartModel.setQuantity(cartModel.getQuantity() - 1);
             cartModel.setPrice(bookModel.getPrice() * cartModel.getQuantity());
             cartRepository.save(cartModel);
         }
-        return new Response(environment.getProperty("one.quantity.removed.success"), HttpStatus.OK.value(), cartModel);
+        return environment.getProperty("one.quantity.removed.success");
     }
 
     @Override
     public Response removeAllItem(Long bookId, String token) {
-        long id = JwtGenerator.decodeJWT(token);
-        cartRepository.deleteByUserIdAndBookId(id, bookId);
+        if (JwtGenerator.decodeJWT(token) != 1L) {
+            long id = JwtGenerator.decodeJWT(token);
+            cartRepository.deleteByUserIdAndBookId(id, bookId);
+        } else {
+            cartRepository.deleteByIpAddressAndBookId(token, bookId);
+        }
         return new Response(HttpStatus.OK.value(), environment.getProperty("quantity.removed.success"));
     }
 
     @Override
     public List<CartModel> getAllItemFromCart(String token) {
-        Long id = JwtGenerator.decodeJWT(token);
-        List<CartModel> items = cartRepository.findAllByUserId(id).stream().filter(c -> !c.isInWishList()).collect(Collectors.toList());
-        if (items.isEmpty())
-            return new ArrayList<>();
-        return items;
+        if (JwtGenerator.decodeJWT(token) != -1L) {
+            Long id = JwtGenerator.decodeJWT(token);
+            List<CartModel> items = cartRepository.findAllByUserId(id).stream().filter(c -> !c.isInWishList()).collect(Collectors.toList());
+            if (items.isEmpty())
+                return new ArrayList<>();
+            return items;
+        } else {
+            List<CartModel> items = cartRepository.findAllByIpAddress(token).stream().filter(c -> !c.isInWishList()).collect(Collectors.toList());
+            if (items.isEmpty())
+                return new ArrayList<>();
+            return items;
+        }
     }
 
     @Override
     public List<CartModel> getAllItemFromWishList(String token) {
-        Long id = JwtGenerator.decodeJWT(token);
-        List<CartModel> items = cartRepository.findAllByUserId(id).stream().filter(CartModel::isInWishList).collect(Collectors.toList());
-        if (items.isEmpty())
-            return new ArrayList<>();
-        return items;
+        if (JwtGenerator.decodeJWT(token) != -1L) {
+            Long id = JwtGenerator.decodeJWT(token);
+            List<CartModel> items = cartRepository.findAllByUserId(id).stream().filter(CartModel::isInWishList).collect(Collectors.toList());
+            if (items.isEmpty())
+                return new ArrayList<>();
+            return items;
+        } else {
+            System.out.println("Inside IpAddress Part");
+            List<CartModel> items = cartRepository.findAllByIpAddress(token).stream().filter(CartModel::isInWishList).collect(Collectors.toList());
+            if (items.isEmpty())
+                return new ArrayList<>();
+            return items;
+        }
     }
 
     @Override
     public List<Long> getWishListStatus(String token) {
-        List<CartModel> allItemFromCart = getAllItemFromCart(token);
-        return allItemFromCart.stream().map(CartModel::getBookId).collect(Collectors.toList());
+        if (JwtGenerator.decodeJWT(token) != -1L) {
+            List<CartModel> allItemFromCart = getAllItemFromCart(token);
+            return allItemFromCart.stream().map(CartModel::getBookId).collect(Collectors.toList());
+        } else {
+            List<CartModel> allItemFromCart = getAllItemFromCart(token);
+            return allItemFromCart.stream().map(CartModel::getBookId).collect(Collectors.toList());
+        }
     }
 
     @Override
     public List<Long> getCartListStatus(String token) {
-        List<CartModel> allItemFromCart = getAllItemFromWishList(token);
-        return allItemFromCart.stream().map(CartModel::getBookId).collect(Collectors.toList());
+        if (JwtGenerator.decodeJWT(token) != -1L) {
+            List<CartModel> allItemFromCart = getAllItemFromWishList(token);
+            return allItemFromCart.stream().map(CartModel::getBookId).collect(Collectors.toList());
+        } else {
+            List<CartModel> allItemFromCart = getAllItemFromWishList(token);
+            return allItemFromCart.stream().map(CartModel::getBookId).collect(Collectors.toList());
+        }
     }
 
     @Override
-    public String setProfilePic(String imageUrl, String token) {
+    public void setProfilePic(String imageUrl, String token) {
         long id = JwtGenerator.decodeJWT(token);
         UserModel user = userRepository.findByUserId(id);
         user.setProfileUrl(imageUrl);
         userRepository.save(user);
-        return imageUrl;
+    }
+
+    @Override
+    public Response assignToCartAndWishList(String ipAddress, String token) {
+        long id = JwtGenerator.decodeJWT(token);
+        List<CartModel> cartModelsByIpAddress = cartRepository.findAllByIpAddress(ipAddress);
+        List<CartModel> cartModelsByUser = cartRepository.findAllByUserId(id);
+        if (!cartModelsByIpAddress.isEmpty()) {
+            for (CartModel cartModelByIP : cartModelsByIpAddress) {
+                cartModelByIP.setUserId(id);
+                boolean status = cartModelsByUser.stream().noneMatch(v -> v.equals(cartModelByIP));
+                if (status){
+                    cartModelByIP.setIpAddress("NotLocalUser");
+                    cartRepository.save(cartModelByIP);
+                } else {
+                    List<CartModel> cartModelByUSER = cartModelsByUser.stream().filter(p -> p.equals(cartModelByIP)).collect(toList());
+                    BeanUtils.copyProperties(cartModelByIP, cartModelByUSER.get(0));
+                    cartModelByUSER.get(0).setIpAddress("NotLocalUser");
+                    cartRepository.save(cartModelByUSER.get(0));
+                }
+            }
+            return new Response(HttpStatus.OK.value(), "Book Assigned to Cart And Wishlist");
+        }
+        return new Response(HttpStatus.OK.value(), "Nothing found with ipAddress");
     }
 
 
@@ -343,8 +473,8 @@ public class UserServiceImplementation implements UserService {
         userRepository.save(user);
         userDetailsDAO.setUser(user);
         userDetailsRepository.save(userDetailsDAO);
-        long id = userDetailsRepository.findByAddressAndUserId(userDetail.getAddress(),userId).getSequenceNo();
-        return new Response(environment.getProperty("user.details.added"), HttpStatus.OK.value(),id);
+        long id = userDetailsRepository.findByAddressAndUserId(userDetail.getAddress(), userId).getSequenceNo();
+        return new Response(environment.getProperty("user.details.added"), HttpStatus.OK.value(), id);
     }
 
     @Override
@@ -362,7 +492,7 @@ public class UserServiceImplementation implements UserService {
         long userId = JwtGenerator.decodeJWT(token);
         orderIdGlobal = addToOrderPlaced(token, id);
         cartRepository.findAllByUserId(userId).stream().filter(c -> !c.isInWishList()).forEach(v -> cartRepository.delete(v));
-        return new Response(HttpStatus.OK.value(), environment.getProperty("quantity.removed.success"));
+        return new Response(HttpStatus.OK.value(), environment.getProperty("quantity.removed.success"), 0);
     }
 
 
@@ -377,13 +507,13 @@ public class UserServiceImplementation implements UserService {
         StringBuilder message =
                 new StringBuilder(
                         "Hi, " + userModel.getFullName() + "\n\n" +
-                        "Your Order is Successfully Placed.\n " +
-                        "your order Id is :" + orderId + "\n\n" +
-                        "Shipping Address : "+userDetails.getFullName()+"\n"+
-                                ""+userDetails.getAddress().substring(0, 30)+"-\n"+
-                                userDetails.getAddress().substring(30)+"\n" +
-                                userDetails.getCity()+" -"+userDetails.getPinCode()+"\n" +"\n\n\n\n"+
-                        "Order Summary");
+                                "Your Order is Successfully Placed.\n " +
+                                "your order Id is :" + orderId + "\n\n" +
+                                "Shipping Address : " + userDetails.getFullName() + "\n" +
+                                "" + userDetails.getAddress().substring(0, 30) + "-\n" +
+                                userDetails.getAddress().substring(30) + "\n" +
+                                userDetails.getCity() + " -" + userDetails.getPinCode() + "\n" + "\n" +
+                                "Order Summary");
         long totalPrice = 0;
         for (CartModel cartModel : allItemFromCart) {
             BookModel bookModel = bookRepository.findByBookId(cartModel.getBookId());
@@ -396,22 +526,20 @@ public class UserServiceImplementation implements UserService {
             orderRepository.save(order);
             totalPrice += cartModel.getPrice();
             String bookOrder =
-            "\n-------------------------------------------------------------------\n" +
-            "Book Name : " + bookModel.getBookName()+"\n" +
-            "Book Price : Rs." + bookModel.getPrice()+"\n" +
-            "Quantity : " + cartModel.getQuantity()+"\n" +
-            "Total Price : Rs." + cartModel.getPrice();
+                    "\n-------------------------------------------------------------------\n" +
+                            "Book Name : " + bookModel.getBookName() + "\n" +
+                            "Book Price : Rs." + bookModel.getPrice() + "\n" +
+                            "Quantity : " + cartModel.getQuantity() + "\n" +
+                            "Total Price : Rs." + cartModel.getPrice();
             message.append(bookOrder);
         }
-        message.append("\n-------------------------------------------------------------------\n" +
-                "Overall Amount Received : Rs."+ totalPrice
-                +"\n\n\n\n");
-        message.append("Thank You for Shopping With Us !!\n\n\n");
-        message.append(
-                "regards\n"+
-                "Online Book Store Team, Bangalore\n"+
-                "Contact Us : +91-9771971429");
-
+        message.append("\n-------------------------------------------------------------------\n" + "Overall Amount Received : Rs.")
+                .append(totalPrice).append("\n\n")
+                .append("Thank You for Shopping With Us !!\n\n\n")
+                .append(
+                        "regards\n" +
+                                "Online Book Store Team, Bangalore\n" +
+                                "Contact Us : +91-9771971429");
         redis.putMap(redisKey, userModel.getEmailId(), userModel.getFullName());
         rabbitMQSender.send(new EmailObject(userModel.getEmailId(), "Online Book Order Confirmation ", message.toString(), "Order Confirmation Mail"));
         return orderId;
@@ -423,112 +551,11 @@ public class UserServiceImplementation implements UserService {
     }
 
     public String generateOrderId() {
-        long random = (long) ((Math.random() * 111L) + 999999L);
+        long random = (long) ((Math.random() * 111L) + 99999999L);
         String pattern = "yyyyMMddHHmmSSmmYYYY";
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
         Date time = new Date();
-        return "OBS"+simpleDateFormat.format(time) + random;
-    }
-
-    // ========================  without login add to cart and wishlist ========================== //
-    @Override
-    public Response addToCartWithoutLogin(Long bookId, String ipAddress) {
-        CartModel cartData = cartRepository.findByIpAddressAndBookId(ipAddress, bookId);
-        if (cartData != null && !cartData.isInWishList()) {
-            return new Response(HttpStatus.OK.value(), "Book already added to cart (still not assigned)");
-        } else if (cartData != null && cartData.isInWishList()) {
-            cartData.setInWishList(false);
-            cartRepository.save(cartData);
-            return new Response(HttpStatus.OK.value(), "Book added to cart successfully,Removed From wishlist (without Login)");
-        } else {
-            CartModel cart = new CartModel();
-            BookModel book = bookRepository.findByBookId(bookId);
-            BeanUtils.copyProperties(book, cart);
-            cart.setQuantity(1);
-            cart.setIpAddress(ipAddress);
-            cartRepository.save(cart);
-            return new Response(HttpStatus.OK.value(), "Book Added to Cart Added On the reference of IpAddress");
-        }
-    }
-
-    @Override
-    public Response addFromWishlistToCartWithoutLogin(Long bookId, String ipAddress) {
-        CartModel cart = cartRepository.findByIpAddressAndBookId(ipAddress, bookId);
-        cart.setInWishList(false);
-        return new Response(HttpStatus.OK.value(), "Book Added from wishlist to Cart Added On the reference of IpAddress");
-    }
-
-    @Override
-    public Response deleteFromWishlistWithoutLogin(Long bookId, String ipAddress) {
-        CartModel cart = cartRepository.findByIpAddressAndBookId(ipAddress, bookId);
-        cartRepository.delete(cart);
-        return new Response(HttpStatus.OK.value(), "Book Deleted from Cart On the reference of IpAddress");
-    }
-
-    @Override
-    public Response addToWishListWithoutLogin(Long bookId, String ipAddress) {
-        CartModel cartData = cartRepository.findByIpAddressAndBookId(ipAddress, bookId);
-        if (cartData != null && cartData.isInWishList()) {
-            return new Response(HttpStatus.OK.value(), "Book already added to WishList (still not assigned)");
-        } else if (cartData != null && !cartData.isInWishList()) {
-            cartData.setInWishList(true);
-            cartRepository.save(cartData);
-            return new Response(HttpStatus.OK.value(), "Book added to WishList successfully (without Login)");
-        } else {
-            CartModel cart = new CartModel();
-            BookModel book = bookRepository.findByBookId(bookId);
-            BeanUtils.copyProperties(book, cart);
-            cart.setQuantity(1);
-            cart.setInWishList(true);
-            cart.setIpAddress(ipAddress);
-            cartRepository.save(cart);
-            return new Response(HttpStatus.OK.value(), "Book Added to Cart Added On the reference of IpAddress");
-        }
-    }
-
-    @Override
-    public Response addMoreItemsWithoutLogin(Long bookId, String ipAddress) {
-        CartModel cart = cartRepository.findByIpAddressAndBookId(ipAddress, bookId);
-        BookModel bookModel = bookRepository.findByBookId(bookId);
-        if (cart.getQuantity() > 0) {
-            cart.setQuantity(cart.getQuantity() + 1);
-            cart.setPrice(bookModel.getPrice() * cart.getQuantity());
-            cartRepository.save(cart);
-        }
-        return new Response(HttpStatus.OK.value(), "Quantity increased into Cart On the reference of IpAddress");
-    }
-
-    @Override
-    public Response removeItemWithoutLogin(Long bookId, String ipAddress) {
-        CartModel cart = cartRepository.findByIpAddressAndBookId(ipAddress, bookId);
-        BookModel bookModel = bookRepository.findByBookId(bookId);
-        if (cart.getQuantity() > 0) {
-            cart.setQuantity(cart.getQuantity() - 1);
-            cart.setPrice(bookModel.getPrice() * cart.getQuantity());
-            cartRepository.save(cart);
-        }
-        return new Response(HttpStatus.OK.value(), "Quantity increased into Cart On the reference of IpAddress");
-    }
-
-    @Override
-    public Response removeAllItemWithoutLogin(Long bookId, String ipAddress) {
-        CartModel cart = cartRepository.findByIpAddressAndBookId(ipAddress, bookId);
-        cartRepository.delete(cart);
-        return new Response(HttpStatus.OK.value(), "Removed from wishlist On the reference of IpAddress");
-    }
-
-    @Override
-    public List<BookModel> getAllItemFromWishListWithoutLogin(String ipAddress) {
-        List<CartModel> allItemFromCartWithoutLogin = cartRepository.findByIpAddress(ipAddress);
-        List<Long> collect = allItemFromCartWithoutLogin.stream().filter(CartModel::isInWishList).map(CartModel::getBookId).collect(toList());
-        return collect.stream().map(v -> bookRepository.findByBookId(v)).collect(Collectors.toList());
-    }
-
-    @Override
-    public List<BookModel> getAllItemFromCartListWithoutLogin(String ipAddress) {
-        List<CartModel> allItemFromCartWithoutLogin = cartRepository.findByIpAddress(ipAddress);
-        List<Long> collect = allItemFromCartWithoutLogin.stream().filter(v -> !v.isInWishList()).map(CartModel::getBookId).collect(toList());
-        return collect.stream().map(v -> bookRepository.findByBookId(v)).collect(Collectors.toList());
+        return "OBS" + simpleDateFormat.format(time) + random;
     }
 }

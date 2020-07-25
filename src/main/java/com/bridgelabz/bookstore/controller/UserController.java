@@ -3,6 +3,7 @@ package com.bridgelabz.bookstore.controller;
 import java.io.IOException;
 import java.util.List;
 
+import javax.swing.text.html.HTML;
 import javax.validation.Valid;
 
 import com.bridgelabz.bookstore.ElasticSearch.Service.UserElasticService;
@@ -36,6 +37,7 @@ import com.bridgelabz.bookstore.response.UserDetailsResponse;
 import com.bridgelabz.bookstore.service.UserService;
 
 import io.swagger.annotations.ApiOperation;
+import org.springframework.web.servlet.ModelAndView;
 
 @RestController
 @RequestMapping("/user")
@@ -70,13 +72,20 @@ public class UserController {
     }
 
     @GetMapping("/verify/{token}")
-    public ResponseEntity<Response> userVerification(@PathVariable("token") String token) {
+    public ModelAndView userVerification(@PathVariable("token") String token) {
+        ModelAndView modelAndView = new ModelAndView();
+        if (userService.verify(token)) {
+//            return ResponseEntity.status(HttpStatus.OK)
+//                    .body(new Response(HttpStatus.OK.value(), environment.getProperty("user.verified.successful")));
 
-        if (userService.verify(token))
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(new Response(HttpStatus.OK.value(), environment.getProperty("user.verified.successful")));
-
-        return ResponseEntity.status(HttpStatus.OK).body(new Response(HttpStatus.BAD_REQUEST.value(), environment.getProperty("user.verified.unsuccessfull")));
+            modelAndView.setViewName("verifyResponse");
+            return modelAndView;
+        }
+//        return ResponseEntity.status(HttpStatus.OK).body(new Response(HttpStatus.BAD_REQUEST.value(), environment.getProperty("user.verified.unsuccessfull")));.
+        else{
+            modelAndView.setViewName("Unverified");
+            return modelAndView;
+        }
     }
 
     @PostMapping("/forgotpassword")
@@ -263,60 +272,15 @@ public class UserController {
     }
 
     @PutMapping(value = "/addImg")
-    public ResponseEntity<Response> addImageToProfile(@RequestParam("file") MultipartFile file, @RequestParam String token) {
+    public ResponseEntity<Response> addImageToProfile(@RequestParam("file") MultipartFile file, @RequestHeader String token) {
         String url = amazonS3ClientService.uploadFile(file);
         userService.setProfilePic(url,token);
         return ResponseEntity.status(HttpStatus.OK).body(new Response(HttpStatus.OK.value(), "Image Uploaded Successfully"));
     }
 
-    // =======================  Api for adding book to cart  and wishlist without login ================================= //
-    @PostMapping("/addToWishlistWithoutLogin")
-    public Response addToWishListWithoutLogin(@RequestParam Long bookId, @RequestParam String ipAddress) {
-        return userService.addToWishListWithoutLogin(bookId, ipAddress);
-    }
-
-    @DeleteMapping("/deleteFromWishlistWithoutLogin")
-    public Response deleteFromWishlistWithoutLogin(@RequestParam Long bookId, @RequestParam String ipAddress) {
-        return userService.deleteFromWishlistWithoutLogin(bookId, ipAddress);
-    }
-
-    @PutMapping("/addFromWishlistToCartWithoutLogin")
-    public Response addFromWishlistToCartWithoutLogin(@RequestParam Long bookId, @RequestParam String ipAddress) {
-        return userService.addFromWishlistToCartWithoutLogin(bookId, ipAddress);
-    }
-
-    @PostMapping("/AddToCartWithoutLogin")
-    public ResponseEntity<Response> AddToCartWithoutLogin(@RequestParam Long bookId, @RequestParam String ipAddress) throws BookException {
-        Response response = userService.addToCartWithoutLogin(bookId, ipAddress);
+    @PutMapping(value = "/assignCart")
+    public ResponseEntity<Response> assignCart(@RequestParam String ipAddress, @RequestParam String token) {
+        Response response = userService.assignToCartAndWishList(ipAddress, token);
         return ResponseEntity.status(HttpStatus.OK).body(response);
-
-    }
-
-    @PostMapping("/addMoreItemsWithoutLogin")
-    public ResponseEntity<Response> addMoreItemsWithoutLogin(@RequestParam Long bookId, @RequestParam String ipAddress) throws BookException {
-        Response response = userService.addMoreItemsWithoutLogin(bookId, ipAddress);
-        return ResponseEntity.status(HttpStatus.OK).body(response);
-    }
-
-    @DeleteMapping("/removeFromCartWithoutLogin")
-    public ResponseEntity<Response> removeFromCartWithoutLogin(@RequestParam Long bookId, @RequestParam String ipAddress) throws BookException {
-        Response response = userService.removeItemWithoutLogin(bookId, ipAddress);
-        return ResponseEntity.status(HttpStatus.OK).body(response);
-    }
-
-    @DeleteMapping("/removeBookFromCartWithoutLogin")
-    public Response removeAllFromCartWithoutLogin(@RequestParam Long bookId, @RequestParam String ipAddress) {
-        return userService.removeAllItemWithoutLogin(bookId, ipAddress);
-    }
-
-    @GetMapping("/getAllWishListWithoutLogin")
-    public ResponseEntity<Response> getAllWishLishWithoutLogin(@RequestParam String ipAddress) {
-        List<BookModel> wishListWithoutLogin = userService.getAllItemFromWishListWithoutLogin(ipAddress);
-        return ResponseEntity.status(HttpStatus.OK).body(new Response("all unVerified Book", HttpStatus.OK.value(), wishListWithoutLogin));
-    }
-
-    @GetMapping("/getAllCartListWithoutLogin")
-    public List<BookModel> getAllCartListWithoutLogin(@RequestParam String ipAddress) {
-        return userService.getAllItemFromCartListWithoutLogin(ipAddress);
     }
 }

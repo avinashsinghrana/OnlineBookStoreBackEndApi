@@ -16,6 +16,7 @@ public class Response {
 	private LocalDateTime time;
 	private String roleType;
 	private String imgUrl;
+	private int size;
 
 	public Response(int status, String message, String imgUrl) {
 		this.status = status;
@@ -40,5 +41,11 @@ public class Response {
 		this.data = data;
 		this.roleType = roleType;
 	}
+
+    public Response(int status, String message, int size) {
+		this.message = message;
+		this.status = status;
+		this.size = size;
+    }
 }
 

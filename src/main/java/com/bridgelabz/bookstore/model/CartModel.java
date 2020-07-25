@@ -10,6 +10,8 @@ import javax.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Objects;
+
 @Data
 @NoArgsConstructor
 @Entity
@@ -29,4 +31,15 @@ public class CartModel {
     private boolean isInWishList;
 	private long userId;
 	private String ipAddress;
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		CartModel cartModel = (CartModel) o;
+		return userId == cartModel.userId &&
+				Objects.equals(bookName, cartModel.bookName) &&
+				Objects.equals(authorName, cartModel.authorName) &&
+				Objects.equals(bookId, cartModel.bookId);
+	}
 }
